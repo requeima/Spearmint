@@ -14,7 +14,7 @@ def branin(x, y):
   #  raise Exception('Blah!')
 
   print 'Result = %f' % result
-  time.sleep(np.random.randint(30))
+  # time.sleep(60)
   return {'branin' : result}
 
 # Write a function like this called 'main'

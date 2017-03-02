@@ -188,7 +188,7 @@ from spearmint.acquisition_functions.abstract_acquisition_function import Abstra
 from spearmint.acquisition_functions.constraints_helper_functions import total_constraint_confidence
 
 def compute_ei(model, pred, ei_target=None, compute_grad=True):
-    if model.pending:
+    if np.any(model.pending):
         return compute_ei_pending(model, pred, ei_target, compute_grad)
 
     if pred.ndim == 1:

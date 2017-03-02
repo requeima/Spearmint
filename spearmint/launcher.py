@@ -236,13 +236,14 @@ def launch(db_address, experiment_name, job_id):
                      % (start_time-job['submit time']))
 
     success = False
+    rng = int(experiment_name[27:])
 
     try:
         if job['language'].lower() == 'matlab':
             result = matlab_launcher(job)
 
         elif job['language'].lower() == 'python':
-            result = python_launcher(job)
+            result = python_launcher(job, rng)
             # sys.stderr.write('RESULT EQUALS %s' % result)
         elif job['language'].lower() == 'shell':
             result = shell_launcher(job)
@@ -305,7 +306,7 @@ def launch(db_address, experiment_name, job_id):
 
     db.save(job, experiment_name, 'jobs', {'id' : job_id})
 
-def python_launcher(job):
+def python_launcher(job, rng):
     # Run a Python function
     sys.stderr.write("Running python job.\n")
 
@@ -326,8 +327,8 @@ def python_launcher(job):
     sys.stderr.write('Importing %s.py\n' % main_file)
     module  = __import__(main_file)
     sys.stderr.write('Running %s.main()\n' % main_file)
-    
-    result = module.main(job['id'], params)
+
+    result = module.main(job['id'], params, rng)
 
     # Change back out.
     os.chdir('..')

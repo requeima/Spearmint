@@ -304,6 +304,9 @@ def main(dirs,
             else:
                 main_file = mainfile
 
+        if main_file[-3:] == '.py':
+            main_file = main_file[:-3]
+
             sys.path.append(options['main_file_path']) # TODO: make this nicer with proper importing
             module          = importlib.import_module(main_file)
             sys.path.remove(options['main_file_path'])

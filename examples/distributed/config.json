@@ -4,15 +4,10 @@
     "polling_time"    : 1,
     "acquisition"     : "PES",
     "resources" : {
-        "my-machine" : {
-            "scheduler"         : "local",
-            "max_concurrent"    : 1,
-            "max_finished_jobs" : 100
-        },
-        "cluster" : {
-            "scheduler"         : "SLURM",
-            "max_concurrent"    : 3,
-            "max_finished_jobs" : 1000
+        "my-machine": {
+            "scheduler": "local",
+            "max_concurrent": 3,
+            "max_finished_jobs": 100
         }
     },
     "tasks": {

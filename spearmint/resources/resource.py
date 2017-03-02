@@ -252,6 +252,14 @@ class Resource(object):
         else:
             return 0
 
+    def numCompleteOrBroken(self, jobs):
+        jobs = self.filterMyJobs(jobs)
+        if jobs:
+            completed_or_broken = map(lambda x: x['status'] in ['complete', 'broken'], jobs)
+            return reduce(add, completed_or_broken, 0)
+        else:
+            return 0
+
     # Is this resource currently accepting new jobs?
     def acceptingJobs(self, jobs):
         if self.numComplete(jobs)+self.numPending(jobs) >= self.max_finished_jobs:

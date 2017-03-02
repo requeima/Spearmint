@@ -294,7 +294,7 @@ def plot_2d_mean_and_var(model, directory, filename_prefix, input_space, current
     mapped_observed_inputs = input_space.from_unit(x_data)
 
     CS = plt.contourf(mappedX, mappedY, mean_on_grid, 20, cmap=cmap)
-    # plt.clabel(CS, inline=1, fontsize=8)
+    input_space.from_unit    # plt.clabel(CS, inline=1, fontsize=8)
 
     plt.colorbar(CS)
 

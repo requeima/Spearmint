@@ -218,6 +218,10 @@ class AbstractModel(object):
     def function_over_hypers(self, fun, *fun_args, **fun_kwargs):
         return function_over_hypers([self], fun, *fun_args, **fun_kwargs)
 
+    def function_over_hypers_thompson_sampling(self, fun, *fun_args, **fun_kwargs):
+        return function_over_hypers_thompson_sampling([self], fun, *fun_args, **fun_kwargs)
+
+
 # Compute the function fun while averaging over the stored
 # hyperparameter samples of multiple models. If models have different
 # numbers of samples, use the first n samples of each model,
@@ -226,7 +230,7 @@ def function_over_hypers(models, fun, *fun_args, **fun_kwargs):
 
     # The the minimum of the number of states over the different models
     min_num_states = reduce(min, map(lambda x: x.num_states, models), np.inf)
-    
+
     for i in xrange(min_num_states):
 
         for model in models:
@@ -260,4 +264,44 @@ def function_over_hypers(models, fun, *fun_args, **fun_kwargs):
     else:
         average /= min_num_states
     
+    return average
+
+
+def function_over_hypers_thompson_sampling(models, fun, *fun_args, **fun_kwargs):
+    # The the minimum of the number of states over the different models
+    min_num_states = reduce(min, map(lambda x: x.num_states, models), np.inf)
+    end_loop = 1
+    for i in xrange(0, 1):
+
+        for model in models:
+            model.set_state(i)
+
+        result = np.array(fun(*fun_args, **fun_kwargs))  # Evaluate the function
+
+        # The first time you evaluate, see how big the arrays are
+        # and initialize arrays for the results
+        if i == 0:
+            if type(result) is tuple:
+                isTuple = True
+                average = [np.zeros(r.shape) for r in result]
+            else:
+                isTuple = False
+                average = np.zeros(result.shape)
+
+        if isTuple:
+            assert (len(result) == len(average))
+            for j in xrange(len(average)):
+                assert (result[j].shape == average[j].shape)
+                average[j] += result[j]
+        else:
+            assert (result.shape == average.shape)
+            average += result
+
+    # Divide by numAveraged to get the average (right now we just have the sum)
+    if isTuple:
+        for j in xrange(len(average)):
+            average[j] /= 1.
+    else:
+        average /= 1.
+
     return average

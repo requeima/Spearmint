@@ -7,7 +7,8 @@ from random import RANDOM
 from expected_hypervolume_improvement import EHI
 from sequential_uncertainty_reduction import SUR
 from sms_ego import SMSego
-__all__ = ["ExpectedImprovement", "ConstraintAndMean", "PES", "PESM", "ParEGO", "RANDOM", "EHI", "SUR", "SMSego"]
+from thompson_sampling import TS
+__all__ = ["ExpectedImprovement", "ConstraintAndMean", "PES", "PESM", "ParEGO", "RANDOM", "EHI", "SUR", "SMSego", "TS"]
 
 
 
